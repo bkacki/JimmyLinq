@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace JimmyLinq
 {
-    static class ComicAnalyzer
+    public static class ComicAnalyzer
     {
         public static IEnumerable<IGrouping<PriceRange, Comic>> GroupComicsByPrice(IEnumerable<Comic> catalog, IReadOnlyDictionary<int, decimal> prices)
         {
             IEnumerable<IGrouping<PriceRange, Comic>> grouped =
                 from comic in catalog
                 orderby prices[comic.Issue]
-                group comic by CalculatePriceRange(comic) into groupedByPrice
+                group comic by CalculatePriceRange(comic, prices) into groupedByPrice
                 select groupedByPrice;
             return grouped;
         }
@@ -29,9 +29,9 @@ namespace JimmyLinq
             return getReview;
         }
 
-        private static PriceRange CalculatePriceRange(Comic comic)
+        private static PriceRange CalculatePriceRange(Comic comic, IReadOnlyDictionary<int, decimal> prices)
         {
-            if (Comic.Prices[comic.Issue] < 100)
+            if (prices[comic.Issue] < 100)
                 return PriceRange.Tanie;
             else
                 return PriceRange.Drogie;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JimmyLinq
 {
-    internal class Comic
+    public class Comic
     {
         public string Name { get; set; }
         public int Issue { get; set; }

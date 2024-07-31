@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JimmyLinq
 {
-    enum PriceRange
+    public enum PriceRange
     {
         Tanie,
         Drogie,
