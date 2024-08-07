@@ -25,7 +25,7 @@ namespace JimmyLinq
                 orderby comic.Issue
                 join review in reviews
                 on comic.Issue equals review.Issue
-                select $"{review.Critic} ocenił nr {comic.Issue} '{comic.Name}' na {review.Score}";
+                select $"{review.Critic} ocenił nr {comic.Issue} '{comic.Name}' na {review.Score:F2}";
             return getReview;
         }
 

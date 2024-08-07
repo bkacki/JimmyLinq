@@ -43,14 +43,44 @@ namespace JimmyLinqUnitTests
 
             var expectedResult = new[]
             {
-                "MuddyCritic oceni³ nr 1 'Numer 1' na 14,5",
+                "MuddyCritic oceni³ nr 1 'Numer 1' na 14,50",
                 "RottenTornadoes oceni³ nr 1 'Numer 1' na 59,93",
-                "MuddyCritic oceni³ nr 2 'Numer 2' na 40,3",
+                "MuddyCritic oceni³ nr 2 'Numer 2' na 40,30",
                 "RottenTornadoes oceni³ nr 2 'Numer 2' na 95,11",
             };
 
             var actualResults = ComicAnalyzer.GetReviews(testComics, testReviews).ToList();
             CollectionAssert.AreEqual(expectedResult, actualResults);
+        }
+
+        [TestMethod]
+        public void ComicAnalyzer_Should_Handle_Weird_Review_Scores()
+        {
+            var testReviews = new[]
+            {
+                new Review() { Issue = 1, Critic = Critics.MuddyCritic, Score = -12.121212  },
+                new Review() { Issue = 1, Critic = Critics.RottenTornadoes, Score = 12321421421.1232 },
+                new Review() { Issue = 2, Critic = Critics.RottenTornadoes, Score = 0 },
+                new Review() { Issue = 2, Critic = Critics.MuddyCritic, Score = 40.3 },
+                new Review() { Issue = 2, Critic = Critics.MuddyCritic, Score = 40.3 },
+                new Review() { Issue = 2, Critic = Critics.MuddyCritic, Score = 40.3 },
+                new Review() { Issue = 2, Critic = Critics.MuddyCritic, Score = 40.3 },
+            };
+
+            var expectedResults = new[]
+            {
+                "MuddyCritic oceni³ nr 1 'Numer 1' na -12,12",
+                "RottenTornadoes oceni³ nr 1 'Numer 1' na 12321421421,12",
+                "RottenTornadoes oceni³ nr 2 'Numer 2' na 0,00",
+                "MuddyCritic oceni³ nr 2 'Numer 2' na 40,30",
+                "MuddyCritic oceni³ nr 2 'Numer 2' na 40,30",
+                "MuddyCritic oceni³ nr 2 'Numer 2' na 40,30",
+                "MuddyCritic oceni³ nr 2 'Numer 2' na 40,30",
+            };
+
+            var actualResults = ComicAnalyzer.GetReviews(testComics, testReviews).ToList();
+
+            CollectionAssert.AreEqual(expectedResults, actualResults);
         }
     }
 }
