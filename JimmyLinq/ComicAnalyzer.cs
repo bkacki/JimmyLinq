@@ -15,7 +15,11 @@ namespace JimmyLinq
                 orderby prices[comic.Issue]
                 group comic by CalculatePriceRange(comic, prices) into groupedByPrice
                 select groupedByPrice;
-            return grouped;
+
+            IEnumerable<IGrouping<PriceRange, Comic>> groupedLinq = 
+                catalog.OrderBy(comic => prices[comic.Issue]).GroupBy(comic => CalculatePriceRange(comic, prices));
+
+            return groupedLinq;
         }
 
         public static IEnumerable<string> GetReviews(IEnumerable<Comic> catalog, IEnumerable<Review> reviews)
@@ -26,7 +30,15 @@ namespace JimmyLinq
                 join review in reviews
                 on comic.Issue equals review.Issue
                 select $"{review.Critic} ocenił nr {comic.Issue} '{comic.Name}' na {review.Score:F2}";
-            return getReview;
+
+            IEnumerable<string> getReviewLinq =
+                catalog.OrderBy(comic => comic.Issue)
+                .Join(reviews,
+                comic => comic.Issue,
+                review => review.Issue,
+                (comic, review) => $"{review.Critic} ocenił nr {comic.Issue} '{comic.Name}' na {review.Score:F2}");
+
+            return getReviewLinq;
         }
 
         private static PriceRange CalculatePriceRange(Comic comic, IReadOnlyDictionary<int, decimal> prices)

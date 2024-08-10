@@ -9,18 +9,13 @@ namespace JimmyLinq
             while (!done)
             {
                 Console.WriteLine("\n[G]rupuj według ceny, [R]ecenzje, inny przycisk aby zakończyć:");
-                switch(Console.ReadKey(true).KeyChar.ToString().ToUpper())
+                var keyChar = Console.ReadKey(true).KeyChar.ToString().ToUpper();
+                done = keyChar switch
                 {
-                    case "G":
-                        done = GroupComicsByPrice();
-                        break;
-                    case "R":
-                        done = GetReviews();
-                        break;
-                    default:
-                        done = true;
-                        break;
-                }
+                    "G" => GroupComicsByPrice(),
+                    "R" => GetReviews(),
+                    _ => true,
+                };
             }
         }
 
